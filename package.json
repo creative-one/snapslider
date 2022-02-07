@@ -1,7 +1,19 @@
 {
   "name": "snapslider-react",
-  "version": "0.1.1",
+  "author": "CreativeOne",
+  "version": "0.1.2",
   "private": false,
+  "main": "dist/index.js",
+  "module": "dist/index.js",
+  "files": [
+    "dist",
+    "README.md"
+  ],
+  "keywords": [
+    "react",
+    "components",
+    "slider"
+  ],
   "dependencies": {
     "@babel/polyfill": "^7.12.1",
     "@testing-library/jest-dom": "^5.14.1",
