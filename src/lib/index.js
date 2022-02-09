@@ -1,3 +1,3 @@
-import Yourcomponent from './components/YourComponent';
+import SnapSlider from './components/SnapSlider';
 
-export { Yourcomponent };
+export default SnapSlider;
