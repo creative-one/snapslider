@@ -3,6 +3,7 @@ import SnapSlider from "./lib";
 import {useEffect, useState} from "react";
 
 function App() {
+    console.log('test') //eslint-disable-line
     const images = useRandomImages()
     const [count, setCount] = useState(2)
 

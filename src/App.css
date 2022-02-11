@@ -4,6 +4,11 @@
   box-sizing: border-box;
 }
 
+body {
+  background: #223;
+  color: white;
+}
+
 .App {
   width: 1700px;
   margin: 0 auto;
@@ -22,7 +27,7 @@
 
 .section h2 {
   margin: 0;
-  border-bottom: 1px solid lightgray;
+  border-bottom: 1px solid currentColor;
   padding: 0.5rem 1rem;
   font-size: 1rem;
   display: flex;
