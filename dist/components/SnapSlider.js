@@ -7,17 +7,21 @@ exports.default = SnapSlider;
 
 require("core-js/modules/web.dom-collections.iterator.js");
 
+require("../styles/main.scss");
+
 var _react = _interopRequireWildcard(require("react"));
-
-require("./SnapSlider.scss");
-
-var _lodash = _interopRequireDefault(require("lodash"));
-
-var _dragPlugin = _interopRequireDefault(require("../dragPlugin"));
 
 var _usePlugins = _interopRequireDefault(require("../usePlugins"));
 
-const _excluded = ["plugins", "children", "onUpdateSettings"];
+var _dragPlugin = _interopRequireDefault(require("../plugins/dragPlugin"));
+
+var _context = require("../utils/context");
+
+var _setup = require("../utils/setup");
+
+var _Controls = require("./Controls");
+
+const _excluded = ["initActiveSlide", "plugins", "onScroll", "children", "onUpdateSettings", "topControls", "bottomControls"];
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -31,55 +35,81 @@ function _objectWithoutPropertiesLoose(source, excluded) { if (source == null) r
 
 function SnapSlider(_ref) {
   let {
+    initActiveSlide = 1,
     plugins = [_dragPlugin.default],
+    onScroll = () => {},
     children = [],
-    onUpdateSettings = () => {}
+    onUpdateSettings = () => {},
+    topControls,
+    bottomControls
   } = _ref,
       props = _objectWithoutProperties(_ref, _excluded);
 
   console.log('render slider'); //eslint-disable-line
 
-  const sliderRef = (0, _react.useRef)();
+  const [activeSlide, setActiveSlide] = (0, _react.useState)(initActiveSlide);
+  const ref = (0, _react.useRef)();
   const trackRef = (0, _react.useRef)();
-  const [settings] = (0, _usePlugins.default)(trackRef, props, plugins, children);
-  const {
-    itemsPerGroup,
-    groupSize,
-    gap
-  } = settings;
-  console.log(itemsPerGroup); //eslint-disable-line
-
-  (0, _react.useEffect)(() => {//onUpdateSettings(settings)
-  }, [settings, onUpdateSettings]);
   const slides = Array.isArray(children) ? children : [children];
+  const {
+    slidesWithGroups,
+    trackStyles,
+    groupStyles,
+    slideStyles,
+    slidesCount
+  } = (0, _setup.setupSlides)(slides, props);
 
-  const slidesWithGroups = _lodash.default.groupBy(slides.map((slide, key) => {
-    return {
-      content: slide,
-      group: key / itemsPerGroup
-    };
-  }), slide => Math.floor(slide.group));
+  const prevSlide = () => {
+    (0, _setup.handleSlideChange)(activeSlide === 1 ? slidesCount : activeSlide - 1, trackRef);
+  };
 
-  const trackStyles = {
-    gridAutoColumns: "".concat(groupSize)
+  const nextSlide = () => {
+    (0, _setup.handleSlideChange)(activeSlide === slidesCount ? 1 : activeSlide + 1, trackRef);
   };
-  const groupStyles = {
-    gridAutoColumns: "minmax(auto, ".concat(100 / itemsPerGroup, "%)")
+
+  const goToSlide = newSlide => {
+    (0, _setup.handleSlideChange)(newSlide, trackRef);
   };
-  const slideStyles = {};
-  return /*#__PURE__*/_react.default.createElement("div", {
-    ref: sliderRef,
+
+  const additionalProps = {
+    activeSlide,
+    slidesCount,
+    groupCount: Object.keys(slidesWithGroups).length,
+    settings: props,
+    prevSlide,
+    nextSlide,
+    goToSlide
+  };
+  const [settings] = (0, _usePlugins.default)(trackRef, additionalProps, plugins, slides);
+  (0, _react.useEffect)(() => {
+    if (trackRef.current) {
+      trackRef.current.addEventListener('scroll', e => {
+        (0, _setup.handleActiveSlide)(trackRef, e.target.scrollLeft, setActiveSlide);
+        onScroll(e.target.scrollLeft, additionalProps);
+      });
+    }
+  }, [trackRef]); //eslint-disable-line
+
+  return /*#__PURE__*/_react.default.createElement(_context.SliderContext.Provider, {
+    value: {
+      sliderRef: ref,
+      settings
+    }
+  }, /*#__PURE__*/_react.default.createElement("div", {
+    ref: ref,
     className: 'snapslider',
     style: {
-      "--snapslider-gab": gap
+      "--snapslider-gab": settings.gap
     }
-  }, /*#__PURE__*/_react.default.createElement(Track, {
+  }, /*#__PURE__*/_react.default.createElement("div", {
+    className: 'snapslider--inner'
+  }, topControls ? topControls(additionalProps) : /*#__PURE__*/_react.default.createElement(_Controls.Arrows, additionalProps), /*#__PURE__*/_react.default.createElement(Track, {
     slidesWithGroups,
     trackStyles,
     groupStyles,
     slideStyles,
     trackRef
-  }));
+  })), bottomControls ? bottomControls(additionalProps) : /*#__PURE__*/_react.default.createElement(_Controls.Dots, additionalProps)));
 }
 
 SnapSlider.defautlProps = {
