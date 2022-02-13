@@ -1,11 +1,12 @@
 import './App.css';
-import SnapSlider from "./lib";
+import SnapSlider, {Arrows} from "./lib";
 import {useEffect, useState} from "react";
+import Index from "./lib/plugins/dots-with-arrows/";
 
 function App() {
     console.log('test') //eslint-disable-line
     const images = useRandomImages()
-    const [count, setCount] = useState(2)
+    const [count, setCount] = useState(1)
 
     return (
         <div className="App">
@@ -24,6 +25,39 @@ function App() {
                     groupSize={'100%'}
                     itemsPerGroup={count}
                     onUpdateSettings={({itemsPerGroup}) => setCount(itemsPerGroup)}
+                    onScroll={(scrollPos) => {
+                        //console.log(scrollPos) //eslint-disable-line
+                    }}
+                    topControls={(props) => {
+                        return <div>
+                            <div className={'example-index'}>
+                                <div>
+                                    <span className={'current'}>{props.activeSlide}</span>
+                                    <span>{props.groupCount}</span>
+                                </div>
+                            </div>
+                            <Arrows {...props} />
+                        </div>
+                    }}
+                >
+                    {images.map(image => <img key={image.id} src={image.download_url} alt={image.author}/>)}
+                </SnapSlider>
+            </Section>
+            <Section title={(<>
+                <span>Bilderslider</span>
+                <input
+                    type={"range"}
+                    min={1}
+                    max={12}
+                    value={count}
+                    onChange={e => setCount(e.target.value)}
+                />
+            </>)}>
+                <SnapSlider
+                    groupSize={'100%'}
+                    itemsPerGroup={count}
+                    onUpdateSettings={({itemsPerGroup}) => setCount(itemsPerGroup)}
+                    bottomControls={Index}
                 >
                     {images.map(image => <img key={image.id} src={image.download_url} alt={image.author}/>)}
                 </SnapSlider>

@@ -1,7 +1,7 @@
+import {checkIfScrollToIsFinished, inlineOffset} from "../utils/helper";
+
 export default function dragPlugin ({
     ref,
-    //settings,
-    //updateSettings,
     isInit
 }) {
     let isMouseDown = false, mouseStart = 0, trackScrollPos = 0
@@ -27,10 +27,9 @@ export default function dragPlugin ({
         if(isMouseDown) {
             const dragDiff = (mouseStart - e.x) * 2
             const scrollVal = dragDiff + trackScrollPos
-            const trackLeft = ref.current.offsetLeft
             const slides = ref.current.querySelectorAll('.snapslider--group')
             const slidesLeftValues = slides.length ? Array.from(slides).map(slide => {
-                return slide.offsetLeft - trackLeft
+                return inlineOffset(ref, slide.offsetLeft)
             }) : []
             const closest = slidesLeftValues.reduce(function(prev, curr) {
                 return (Math.abs(curr - scrollVal) < Math.abs(prev - scrollVal) ? curr : prev);
@@ -39,12 +38,10 @@ export default function dragPlugin ({
                 left: closest,
                 behavior: 'smooth'
             })
-            const checkIfScrollToIsFinished = setInterval(() => {
-                if (closest === trackLeft) {
-                    ref.current.style.scrollSnapType = 'inline mandatory'
-                    clearInterval(checkIfScrollToIsFinished);
-                }
-            }, 25);
+
+            checkIfScrollToIsFinished(closest, ref).then(() => {
+                ref.current.style.scrollSnapType = 'inline mandatory'
+            })
 
             isMouseDown = false
         }

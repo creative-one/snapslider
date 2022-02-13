@@ -24,9 +24,8 @@ export default function usePlugins (ref, props, plugins, slides) {
         if(ref.current && slides.length > 0) {
             plugins.forEach(plugin => {
                 plugin({
-                    settings,
+                    props,
                     ref,
-                    updateSettings,
                     slides,
                     isInit: init.current
                 })

@@ -1,51 +1,84 @@
-import React, {useEffect, useRef} from 'react'
-import './SnapSlider.scss'
-import _ from "lodash";
-import dragPlugin from "../dragPlugin";
+import '../styles/main.scss'
+
+import React, {useEffect, useRef, useState} from 'react'
 import usePlugins from "../usePlugins";
 
-export default function SnapSlider({
+//Default Plugins
+import dragPlugin from "../plugins/dragPlugin";
+import {SliderContext} from "../utils/context";
+import {handleActiveSlide, handleSlideChange, setupSlides} from "../utils/setup";
+import {Arrows, Dots} from "./Controls";
+
+export default function SnapSlider({initActiveSlide= 1,
     plugins = [dragPlugin],
+    onScroll = () => {},
     children = [],
     onUpdateSettings = () => {},
+    topControls,
+    bottomControls,
     ...props
 }) {
     console.log('render slider') //eslint-disable-line
-    const sliderRef = useRef()
+    const [activeSlide, setActiveSlide] = useState(initActiveSlide)
+    const ref = useRef()
     const trackRef = useRef()
-    const [settings] = usePlugins(trackRef, props, plugins, children)
 
-    const {
-        itemsPerGroup,
-        groupSize,
-        gap,
-    } = settings
-
-    console.log(itemsPerGroup) //eslint-disable-line
-
-    useEffect(() => {
-        //onUpdateSettings(settings)
-    }, [settings, onUpdateSettings])
 
     const slides = Array.isArray(children) ? children : [children]
-    const slidesWithGroups = _.groupBy(slides.map((slide, key) => {
-        return {
-            content: slide,
-            group: key / itemsPerGroup
-        }
-    }), slide => Math.floor(slide.group))
+    const {
+        slidesWithGroups,
+        trackStyles,
+        groupStyles,
+        slideStyles,
+        slidesCount
+    } = setupSlides(slides, props)
 
-    const trackStyles = {
-        gridAutoColumns: `${groupSize}`,
+    const prevSlide = () => {
+        handleSlideChange(activeSlide === 1 ? slidesCount : activeSlide - 1, trackRef)
     }
-    const groupStyles = {
-        gridAutoColumns: `minmax(auto, ${100 / itemsPerGroup}%)`
+
+    const nextSlide = () => {
+        handleSlideChange(activeSlide === slidesCount ? 1 : activeSlide + 1, trackRef)
     }
-    const slideStyles = {}
+
+    const goToSlide = (newSlide) => {
+        handleSlideChange(newSlide, trackRef)
+    }
+
+    const additionalProps = {
+        activeSlide,
+        slidesCount,
+        groupCount :Object.keys(slidesWithGroups).length,
+        settings: props,
+        prevSlide,
+        nextSlide,
+        goToSlide
+    }
+
+    const [settings] = usePlugins(trackRef, additionalProps, plugins, slides)
+
+    useEffect(() => {
+        if(trackRef.current) {
+            trackRef.current.addEventListener('scroll', (e) => {
+                handleActiveSlide(trackRef, e.target.scrollLeft, setActiveSlide)
+                onScroll(e.target.scrollLeft, additionalProps)
+            })
+        }
+    }, [trackRef]) //eslint-disable-line
+
     return (
-        <div ref={sliderRef} className={'snapslider'} style={{ "--snapslider-gab": gap }}>
-            <Track {...{slidesWithGroups, trackStyles, groupStyles, slideStyles, trackRef}} />
-        </div>
+        <SliderContext.Provider value={{
+            sliderRef: ref,
+            settings
+        }}>
+            <div ref={ref} className={'snapslider'} style={{ "--snapslider-gab": settings.gap }}>
+                <div className={'snapslider--inner'}>
+                    {topControls ? topControls(additionalProps) : <Arrows {...additionalProps} />}
+                    <Track {...{slidesWithGroups, trackStyles, groupStyles, slideStyles, trackRef}} />
+                </div>
+                {bottomControls ? bottomControls(additionalProps) : <Dots {...additionalProps} />}
+            </div>
+        </SliderContext.Provider>
     )
 }
 
