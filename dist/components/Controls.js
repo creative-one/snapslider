@@ -5,25 +5,29 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.DotsWithArrows = exports.Dots = exports.Arrows = exports.ArrowPrevIcon = exports.ArrowNextIcon = exports.Arrow = void 0;
 
-const ArrowPrevIcon = () => /*#__PURE__*/React.createElement("svg", {
+var _react = _interopRequireDefault(require("react"));
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+const ArrowPrevIcon = () => /*#__PURE__*/_react.default.createElement("svg", {
   version: "1.1",
   xmlns: "http://www.w3.org/2000/svg",
   x: "0px",
   y: "0px",
   viewBox: "0 0 50 50"
-}, /*#__PURE__*/React.createElement("polygon", {
+}, /*#__PURE__*/_react.default.createElement("polygon", {
   points: "31,5 36,5 19,25 36,45 31,45 14,25 "
 }));
 
 exports.ArrowPrevIcon = ArrowPrevIcon;
 
-const ArrowNextIcon = () => /*#__PURE__*/React.createElement("svg", {
+const ArrowNextIcon = () => /*#__PURE__*/_react.default.createElement("svg", {
   version: "1.1",
   xmlns: "http://www.w3.org/2000/svg",
   x: "0px",
   y: "0px",
   viewBox: "0 0 50 50"
-}, /*#__PURE__*/React.createElement("polygon", {
+}, /*#__PURE__*/_react.default.createElement("polygon", {
   points: "19,5 14,5 31,25 14,45 19,45 36,25 "
 }));
 
@@ -36,7 +40,7 @@ const Arrow = _ref => {
     label,
     isDisabled
   } = _ref;
-  return /*#__PURE__*/React.createElement("button", {
+  return /*#__PURE__*/_react.default.createElement("button", {
     className: "snapslider--arrow ".concat(isNext ? 'prev' : 'next', " ").concat(isDisabled ? 'disabled' : ''),
     onClick: onClick
   }, label);
@@ -49,19 +53,19 @@ const Arrows = _ref2 => {
     prevSlide,
     nextSlide,
     labels = {
-      prev: /*#__PURE__*/React.createElement(ArrowPrevIcon, null),
-      next: /*#__PURE__*/React.createElement(ArrowNextIcon, null)
+      prev: /*#__PURE__*/_react.default.createElement(ArrowPrevIcon, null),
+      next: /*#__PURE__*/_react.default.createElement(ArrowNextIcon, null)
     },
     activeSlide,
     groupCount
   } = _ref2;
-  return /*#__PURE__*/React.createElement("div", {
+  return /*#__PURE__*/_react.default.createElement("div", {
     className: 'snapslider--arrows'
-  }, /*#__PURE__*/React.createElement(Arrow, {
+  }, /*#__PURE__*/_react.default.createElement(Arrow, {
     onClick: prevSlide,
     label: labels.prev,
     isDisabled: activeSlide === 1
-  }), /*#__PURE__*/React.createElement(Arrow, {
+  }), /*#__PURE__*/_react.default.createElement(Arrow, {
     onClick: nextSlide,
     label: labels.next,
     isDisabled: activeSlide === groupCount,
@@ -79,9 +83,9 @@ const Dots = _ref3 => {
     activeSlide
   } = _ref3;
   const dots = Array(groupCount).fill(undefined);
-  return /*#__PURE__*/React.createElement("div", {
+  return /*#__PURE__*/_react.default.createElement("div", {
     className: 'snapslider--dots'
-  }, dots.map((dot, key) => /*#__PURE__*/React.createElement("button", {
+  }, dots.map((dot, key) => /*#__PURE__*/_react.default.createElement("button", {
     key: key,
     "data-slide": key,
     className: "snapslider--dot ".concat(activeSlide === key + 1 ? 'active' : ''),
@@ -98,15 +102,15 @@ const DotsWithArrows = props => {
     activeSlide,
     groupCount
   } = props;
-  return /*#__PURE__*/React.createElement("div", {
+  return /*#__PURE__*/_react.default.createElement("div", {
     className: 'snapslider---dots-with-arrows'
-  }, /*#__PURE__*/React.createElement(Arrow, {
+  }, /*#__PURE__*/_react.default.createElement(Arrow, {
     onClick: prevSlide,
-    label: /*#__PURE__*/React.createElement(ArrowPrevIcon, null),
+    label: /*#__PURE__*/_react.default.createElement(ArrowPrevIcon, null),
     isDisabled: activeSlide === 1
-  }), /*#__PURE__*/React.createElement(Dots, props), /*#__PURE__*/React.createElement(Arrow, {
+  }), /*#__PURE__*/_react.default.createElement(Dots, props), /*#__PURE__*/_react.default.createElement(Arrow, {
     onClick: nextSlide,
-    label: /*#__PURE__*/React.createElement(ArrowNextIcon, null),
+    label: /*#__PURE__*/_react.default.createElement(ArrowNextIcon, null),
     isDisabled: activeSlide === groupCount,
     isNext: true
   }));
