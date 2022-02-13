@@ -1,0 +1,151 @@
+.snapslider{
+  --s-transition: all ease 0.25s;
+
+  position: relative;
+
+  img {
+    width: 100%;
+    height: auto;
+  }
+
+  //transitions
+  &--track,
+  &--group {
+    transition: all 0.25s ease;
+  }
+
+  &--inner {
+    position: relative;
+  }
+
+  &--track {
+    position: relative;
+    z-index: 1;
+    display: grid;
+    grid-auto-flow: column;
+    grid-auto-columns: 21%;
+    overflow-x: scroll;
+    overscroll-behavior-inline: contain;
+    margin: 0 calc(var(--snapslider-gab, 1rem) / -2);
+
+    scroll-snap-type: inline mandatory;
+
+    -ms-overflow-style: none;  /* IE and Edge */
+    scrollbar-width: none;  /* Firefox */
+
+    &::-webkit-scrollbar {
+      display: none;
+    }
+
+    > * {
+      scroll-snap-align: start;
+    }
+  }
+
+  &--group {
+    display: grid;
+    grid-auto-flow: column;
+    user-select: none;
+  }
+
+  &--slide {
+    display: grid;
+    padding: 0 calc(var(--snapslider-gab, 1rem) / 2);
+
+    img{
+      inline-size: 100%;
+      aspect-ratio: 16 / 9;
+      object-fit: cover;
+      user-drag: none;
+      -webkit-user-drag: none;
+    }
+  }
+
+  &--arrows {
+    position: absolute;
+    z-index: 2;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    pointer-events: none;
+    opacity: 0;
+    transition: var(--s-transition);
+  }
+
+  &:hover {
+    .snapslider--arrows {
+      opacity: 1;
+    }
+  }
+
+  &--arrow {
+    border: unset;
+    border-radius: 0;
+    cursor: pointer;
+    pointer-events: auto;
+    min-width: 3rem;
+    font-weight: 500;
+    padding: 0.75rem;
+    height: 3rem;
+    background: rgba(white, 0.3);
+    color: black;
+    backdrop-filter: blur(10px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0.5;
+    transition: var(--s-transition);
+
+    &:hover {
+      background: rgba(white, 0.7);
+    }
+
+    &.disabled {
+      pointer-events: none;
+      opacity: 0;
+    }
+  }
+
+  &--dots {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 1rem;
+    gap: 0;
+  }
+
+  &--dot {
+    background: unset;
+    position: relative;
+    cursor: pointer;
+    border: unset;
+    padding: 0;
+    width: 1.5rem;
+    height: 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: inherit;
+    opacity: 0.3;
+    transition: var(--s-transition);
+    font-size: 0.5rem;
+
+    &::before {
+      content: "";
+      width: 1em;
+      height: 1em;
+      background: currentColor;
+      border-radius: 100%;
+    }
+
+    &.active {
+      opacity: 1;
+      font-size: 1rem;
+    }
+
+    &:hover:not(.active) {
+      opacity: 0.75;
+    }
+  }
+}

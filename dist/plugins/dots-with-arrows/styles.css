@@ -1,0 +1,8 @@
+.snapslider-plugin-dots-with-arrows{
+    display: flex;
+    align-items: center;
+}
+
+.snapslider-plugin-dots-with-arrows .snapslider--dots{
+    flex: 1;
+}
