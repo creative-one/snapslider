@@ -1,3 +1,5 @@
+import React from 'react'
+
 export const ArrowPrevIcon = () => (
     <svg
         version="1.1"
@@ -61,4 +63,20 @@ export const Dots = ({groupCount, goToSlide, withIndex = false, activeSlide}) =>
            ))}
        </div>
    )
+}
+
+export const DotsWithArrows = (props) => {
+    const {
+        prevSlide,
+        nextSlide,
+        activeSlide,
+        groupCount
+    } = props
+    return (
+        <div className={'snapslider---dots-with-arrows'}>
+            <Arrow onClick={prevSlide} label={<ArrowPrevIcon />} isDisabled={activeSlide === 1}/>
+            <Dots {...props} />
+            <Arrow onClick={nextSlide} label={<ArrowNextIcon />} isDisabled={activeSlide === groupCount} isNext/>
+        </div>
+    )
 }

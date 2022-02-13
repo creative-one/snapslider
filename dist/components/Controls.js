@@ -3,7 +3,7 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.Dots = exports.Arrows = exports.ArrowPrevIcon = exports.ArrowNextIcon = exports.Arrow = void 0;
+exports.DotsWithArrows = exports.Dots = exports.Arrows = exports.ArrowPrevIcon = exports.ArrowNextIcon = exports.Arrow = void 0;
 
 const ArrowPrevIcon = () => /*#__PURE__*/React.createElement("svg", {
   version: "1.1",
@@ -90,3 +90,26 @@ const Dots = _ref3 => {
 };
 
 exports.Dots = Dots;
+
+const DotsWithArrows = props => {
+  const {
+    prevSlide,
+    nextSlide,
+    activeSlide,
+    groupCount
+  } = props;
+  return /*#__PURE__*/React.createElement("div", {
+    className: 'snapslider---dots-with-arrows'
+  }, /*#__PURE__*/React.createElement(Arrow, {
+    onClick: prevSlide,
+    label: /*#__PURE__*/React.createElement(ArrowPrevIcon, null),
+    isDisabled: activeSlide === 1
+  }), /*#__PURE__*/React.createElement(Dots, props), /*#__PURE__*/React.createElement(Arrow, {
+    onClick: nextSlide,
+    label: /*#__PURE__*/React.createElement(ArrowNextIcon, null),
+    isDisabled: activeSlide === groupCount,
+    isNext: true
+  }));
+};
+
+exports.DotsWithArrows = DotsWithArrows;

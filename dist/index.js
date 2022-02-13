@@ -15,6 +15,12 @@ Object.defineProperty(exports, "Dots", {
     return _Controls.Dots;
   }
 });
+Object.defineProperty(exports, "DotsWithArrows", {
+  enumerable: true,
+  get: function get() {
+    return _Controls.DotsWithArrows;
+  }
+});
 exports.default = void 0;
 
 var _SnapSlider = _interopRequireDefault(require("./components/SnapSlider"));

@@ -1,7 +1,6 @@
 import './App.css';
-import SnapSlider, {Arrows} from "./lib";
+import SnapSlider, {Arrows, DotsWithArrows} from "./lib";
 import {useEffect, useState} from "react";
-import Index from "./lib/plugins/dots-with-arrows/";
 
 function App() {
     console.log('test') //eslint-disable-line
@@ -57,7 +56,7 @@ function App() {
                     groupSize={'100%'}
                     itemsPerGroup={count}
                     onUpdateSettings={({itemsPerGroup}) => setCount(itemsPerGroup)}
-                    bottomControls={Index}
+                    bottomControls={DotsWithArrows}
                 >
                     {images.map(image => <img key={image.id} src={image.download_url} alt={image.author}/>)}
                 </SnapSlider>

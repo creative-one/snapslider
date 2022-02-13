@@ -1,5 +1,5 @@
 import SnapSlider from './components/SnapSlider';
-import {Arrows, Dots} from './components/Controls';
+import {Arrows, Dots, DotsWithArrows} from './components/Controls';
 
 export default SnapSlider;
-export {Arrows, Dots}
+export {Arrows, Dots, DotsWithArrows}
