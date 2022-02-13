@@ -25,7 +25,7 @@ export const ArrowNextIcon = () => (
 )
 
 export const Arrow = ({isNext = false, onClick, label, isDisabled}) => (
-    <button className={`snapslider--arrow ${isNext ? 'prev' : 'next'} ${isDisabled ? 'disabled' : ''}`} onClick={onClick}>{label}</button>
+    <button className={`snapslider--arrow ${isNext ? 'next' : 'prev'} ${isDisabled ? 'disabled' : ''}`} onClick={onClick}>{label}</button>
 
 )
 
@@ -73,7 +73,7 @@ export const DotsWithArrows = (props) => {
         groupCount
     } = props
     return (
-        <div className={'snapslider---dots-with-arrows'}>
+        <div className={'snapslider--dots-with-arrows'}>
             <Arrow onClick={prevSlide} label={<ArrowPrevIcon />} isDisabled={activeSlide === 1}/>
             <Dots {...props} />
             <Arrow onClick={nextSlide} label={<ArrowNextIcon />} isDisabled={activeSlide === groupCount} isNext/>

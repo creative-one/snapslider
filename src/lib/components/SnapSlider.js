@@ -15,7 +15,10 @@ export default function SnapSlider({initActiveSlide= 1,
     children = [],
     onUpdateSettings = () => {},
     topControls,
+    showTopControls = true,
     bottomControls,
+    showBottomControls = true,
+    className = "true",
     ...props
 }) {
     console.log('render slider') //eslint-disable-line
@@ -46,6 +49,8 @@ export default function SnapSlider({initActiveSlide= 1,
     }
 
     const additionalProps = {
+        sliderRef: ref,
+        trackRef,
         activeSlide,
         slidesCount,
         groupCount :Object.keys(slidesWithGroups).length,
@@ -66,17 +71,18 @@ export default function SnapSlider({initActiveSlide= 1,
         }
     }, [trackRef]) //eslint-disable-line
 
+    console.log('Test') //eslint-disable-line
     return (
         <SliderContext.Provider value={{
             sliderRef: ref,
             settings
         }}>
-            <div ref={ref} className={'snapslider'} style={{ "--snapslider-gab": settings.gap }}>
+            <div ref={ref} className={`snapslider ${className}`} style={{ "--snapslider-gab": settings.gap }}>
                 <div className={'snapslider--inner'}>
-                    {topControls ? topControls(additionalProps) : <Arrows {...additionalProps} />}
+                    {showTopControls && (topControls ? topControls(additionalProps) : <Arrows {...additionalProps} />)}
                     <Track {...{slidesWithGroups, trackStyles, groupStyles, slideStyles, trackRef}} />
                 </div>
-                {bottomControls ? bottomControls(additionalProps) : <Dots {...additionalProps} />}
+                {showBottomControls && (bottomControls ? bottomControls(additionalProps) : <Dots {...additionalProps} />)}
             </div>
         </SliderContext.Provider>
     )

@@ -21,7 +21,7 @@ var _setup = require("../utils/setup");
 
 var _Controls = require("./Controls");
 
-const _excluded = ["initActiveSlide", "plugins", "onScroll", "children", "onUpdateSettings", "topControls", "bottomControls"];
+const _excluded = ["initActiveSlide", "plugins", "onScroll", "children", "onUpdateSettings", "topControls", "showTopControls", "bottomControls", "showBottomControls", "className"];
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -41,7 +41,10 @@ function SnapSlider(_ref) {
     children = [],
     onUpdateSettings = () => {},
     topControls,
-    bottomControls
+    showTopControls = true,
+    bottomControls,
+    showBottomControls = true,
+    className = "true"
   } = _ref,
       props = _objectWithoutProperties(_ref, _excluded);
 
@@ -72,6 +75,8 @@ function SnapSlider(_ref) {
   };
 
   const additionalProps = {
+    sliderRef: ref,
+    trackRef,
     activeSlide,
     slidesCount,
     groupCount: Object.keys(slidesWithGroups).length,
@@ -90,6 +95,8 @@ function SnapSlider(_ref) {
     }
   }, [trackRef]); //eslint-disable-line
 
+  console.log('Test'); //eslint-disable-line
+
   return /*#__PURE__*/_react.default.createElement(_context.SliderContext.Provider, {
     value: {
       sliderRef: ref,
@@ -97,19 +104,19 @@ function SnapSlider(_ref) {
     }
   }, /*#__PURE__*/_react.default.createElement("div", {
     ref: ref,
-    className: 'snapslider',
+    className: "snapslider ".concat(className),
     style: {
       "--snapslider-gab": settings.gap
     }
   }, /*#__PURE__*/_react.default.createElement("div", {
     className: 'snapslider--inner'
-  }, topControls ? topControls(additionalProps) : /*#__PURE__*/_react.default.createElement(_Controls.Arrows, additionalProps), /*#__PURE__*/_react.default.createElement(Track, {
+  }, showTopControls && (topControls ? topControls(additionalProps) : /*#__PURE__*/_react.default.createElement(_Controls.Arrows, additionalProps)), /*#__PURE__*/_react.default.createElement(Track, {
     slidesWithGroups,
     trackStyles,
     groupStyles,
     slideStyles,
     trackRef
-  })), bottomControls ? bottomControls(additionalProps) : /*#__PURE__*/_react.default.createElement(_Controls.Dots, additionalProps)));
+  })), showBottomControls && (bottomControls ? bottomControls(additionalProps) : /*#__PURE__*/_react.default.createElement(_Controls.Dots, additionalProps))));
 }
 
 SnapSlider.defautlProps = {

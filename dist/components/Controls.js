@@ -41,7 +41,7 @@ const Arrow = _ref => {
     isDisabled
   } = _ref;
   return /*#__PURE__*/_react.default.createElement("button", {
-    className: "snapslider--arrow ".concat(isNext ? 'prev' : 'next', " ").concat(isDisabled ? 'disabled' : ''),
+    className: "snapslider--arrow ".concat(isNext ? 'next' : 'prev', " ").concat(isDisabled ? 'disabled' : ''),
     onClick: onClick
   }, label);
 };
@@ -103,7 +103,7 @@ const DotsWithArrows = props => {
     groupCount
   } = props;
   return /*#__PURE__*/_react.default.createElement("div", {
-    className: 'snapslider---dots-with-arrows'
+    className: 'snapslider--dots-with-arrows'
   }, /*#__PURE__*/_react.default.createElement(Arrow, {
     onClick: prevSlide,
     label: /*#__PURE__*/_react.default.createElement(ArrowPrevIcon, null),
